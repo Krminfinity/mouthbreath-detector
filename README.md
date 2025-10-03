@@ -28,18 +28,25 @@ Webカメラを使用してリアルタイムで口呼吸を検出し、Windows�
 ### 方法1: EXEファイルを使用（推奨）
 
 1. **EXEファイルをダウンロード**
-   ```
-   ※ Releasesページからmain_app.exeをダウンロード予定
-   ```
+   - [Releases](https://github.com/Krminfinity/mouthbreath-detector/releases)ページにアクセス
+   - 最新リリースの`main_app.exe`をダウンロード
+   - ウイルス警告が出る場合は「その他の情報」→「実行」を選択
 
 2. **実行**
-   ```
+   ```bash
+   # デフォルト実行（無制限監視）
    main_app.exe
+   
+   # 30分間監視
+   main_app.exe --duration 30
+   
+   # ヘルプ表示
+   main_app.exe --help
    ```
    
-   - デフォルトでバックグラウンド動作
+   - バックグラウンドで口呼吸監視を開始
    - 口呼吸検出時にWindows通知が表示
-   - UIを表示したい場合: `main_app.exe --ui`
+   - 'q'キーで終了、またはCtrl+Cで中断
 
 ### 方法2: Pythonソースコードから実行
 
@@ -173,7 +180,6 @@ python -c "import cv2; cap = cv2.VideoCapture(0); print('Camera:', cap.isOpened(
 - [x] MAR監視による口呼吸検出
 - [x] Windows通知機能  
 - [x] バックグラウンド動作
-- [x] UI表示モード（オプション）
 - [x] EXE化対応
 
 ### 今後の拡張予定
@@ -181,6 +187,28 @@ python -c "import cv2; cap = cv2.VideoCapture(0); print('Camera:', cap.isOpened(
 - [ ] 統計・履歴機能
 - [ ] macOS対応
 - [ ] カスタム通知音
+
+## 🔨 開発者向け: EXEビルド手順
+
+```bash
+# 1. Python 3.10仮想環境作成
+python -m venv .venv310
+.venv310\Scripts\activate
+
+# 2. 依存関係インストール
+pip install mediapipe opencv-python win10toast pyinstaller
+
+# 3. EXEファイル作成
+cd src/core
+pyinstaller --onefile --exclude-module matplotlib --exclude-module tkinter --console main_app_exe.py
+
+# 4. 出力確認
+ls dist/main_app_exe.exe
+```
+
+**注意**: 
+- EXEファイルは約95MBになります（MediaPipe等の依存関係を含むため）
+- GitHub Releasesで配布（.gitignoreでEXEファイルは除外されています）
 
 ## 📄 ライセンス
 
