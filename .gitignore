@@ -40,6 +40,8 @@ Thumbs.db
 __pycache__/
 *.py[cod]
 *$py.class
+.venv310/
+# Python venv
 *.so
 .Python
 env/
